@@ -6,11 +6,12 @@ This is a demo app for Co:Helm includes creating a prior auth and viewing a deci
 
 ## Setup
 1. First, clone the repository and navigate to the project directory:
-3. Go to your terminal
-run python3 -m venv .venv
-4. Activate virtual environment
-run source .venv/bin/activate
-5. Install requirements
-run pip install -r requirements.txt
+2. Go to your terminal and enter the following:
+3. Set up the virtual environment
+python3 -m venv .venv
+4. Activate the virtual environment
+source .venv/bin/activate
+5. Install the requirements
+pip install -r requirements.txt
 6. Run the app
-run python run.py
+python run.py
