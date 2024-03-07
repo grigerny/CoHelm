@@ -2,31 +2,15 @@
 Co:Helm
 
 ## Overview
-This is a demo test app for Co:Helm showing an app that walks the user through a user experience which includes creating a prior auth and viewing a decision screen.  
-
-## Requirements
-List of requirements and dependencies.
+This is a demo app for Co:Helm includes creating a prior auth and viewing a decision screen for a patient.
 
 ## Setup
-Instructions on setting up the project environment.
-
-### Virtual Environment
-How to set up the virtual environment.
-
-### Dependencies
-How to install dependencies.
-
-## Running the Application
-Step-by-step instructions on how to run the application.
-
-## Configuration
-Details on configuring the application.
-
-## Using Docker (Optional)
-Instructions for building and running with Docker.
-
-## Contributing
-Guidelines for contributing to the project.
-
-## License
-Short note on the project's license.
+1. First, clone the repository and navigate to the project directory:
+3. Go to your terminal
+run python3 -m venv .venv
+4. Activate virtual environment
+run source .venv/bin/activate
+5. Install requirements
+run pip install -r requirements.txt
+6. Run the app
+run python run.py
