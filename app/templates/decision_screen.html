@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://kit.fontawesome.com/6ccefdb973.js" crossorigin="anonymous"></script>
+    <title>Co:Holm Decision Path for {{ data.case_id }}
+    </title>
+</head>
+<body>
+    <div class="top-section">
+        <!-- Patient basic info goes here -->
+        <div class="patient-details-container">
+            <div class="details-and-procedure-container">  
+                <div class="patient-profile-photo-and-name-container">
+                
+                    <div class="patient-profile-photo-container">
+                    <a href="/">
+                    <img id="patient-profile-photo" src="{{ url_for('static', filename='Mickey_mouse.png') }}" alt="Mickey Mouse" class="patient-profile-photo">
+                    </a>
+                    </div>
+
+                    <div class="patient-name-container">
+                        <div class="patient-name">
+                            Mouse, Mickey
+                        </div>
+                            <div class="patient-details-row">
+                                <div class="patient-gender-data">Male</div>
+                                <div class="patient-age-data">54</div>
+                                <div class="patient-DOB">DOB: 01/01/1970</div>
+                                <div class="patient-MR">MRN: 090901</div> 
+                            </div>
+                    </div>  
+                </div> 
+                
+                <div class="procedure-name-container">
+                    <!-- Procedure name goes here -->
+                    <div class="procedure-name">
+                    {{ data.procedure_name }}
+                    </div> 
+                    <!-- AI procedure decision goes here -->
+                    <div class="paragraph-red">
+                    Case {{ 'Approved' if data['is_met'] else 'Denied' }}
+                    </div>
+                </div>
+        </div>
+    </div> 
+</div>
+
+<div class="container">
+    <div class="left-column">
+        <iframe id="pdfViewer" src="static/guidelines.pdf" style="width: 100%;" frameborder="0"></iframe>
+    </div>
+        <div class="right-column">
+            <div class="scrollable-content"> 
+        <div class="heading2">
+        Summary
+        </div>
+        <div class="paragraph">
+        {{ data.summary }}
+        </div>
+        <div class="heading3">
+        Case ID 
+        </div>
+        <div class="paragraph">
+        {{ data.case_id }}
+        </div>
+        <div class="cpd-codes-section">
+            <div class="heading3">
+                Codes
+            </div>
+            <div class="paragraph">
+            {% for code in data.cpt_codes %}
+            {{ code }}
+            {% endfor %}
+            </div>
+        </div>
+        <div class="heading3">
+            Attached PDFs
+        </div>
+        <div class="paragraph">
+            <div class="pdf-switcher">
+
+                <button id="guidelines" data-pdf-src="static/guidelines.pdf">GUIDELINES</button>
+                <button id="medical-record" data-pdf-src="static/medical-record.pdf">MEDICAL RECORDS</button>
+            </div>
+        </div>
+        <div class="heading3">
+            Status 
+        </div>
+        <div class="paragraph">
+            {{ 'Complete' if data['status'] else 'Incomplete' }}
+        </div>
+        <div class="heading3">
+            Case Decision <button id="toggle-button" aria-label="Toggle Options">
+                <i class="fa-solid fa-chevron-up"></i>
+            </button>
+        </div>
+            </div>
+  
+    {% for step in data.steps %}
+    <div class="step">
+          <!-- Display case_id directly -->
+        <div class="options-container hidden">
+            <div class="heading2">
+                We were presented with the following options:
+            </div> 
+                {% for option in step.options %}
+                         {% if option.selected %}   
+                        <div class="option">
+                            {{ option.text }}
+                        </div>
+                        {% else %}              
+                        <div class="option-selected">                           
+                        {{ option.text }}
+                        </div>
+                        
+                        {% endif %}
+                        {% endfor %}
+            <div class="reasoning-container">
+                    <div class="heading2">
+                Reasoning
+            </div>
+            <div class="paragraph">
+            {{ step.reasoning|safe }}
+             </div>
+            <div class="evidence-container">
+                <div class="heading2">
+                Evidence
+                </div>
+                <div class="paragraph">
+                {% for evidence in step.evidence %}
+                {% if ':' in evidence.content %}
+                
+                {% set parts = evidence.content.split(':', 1) %}
+                <div class="heading2"> 
+                {{ parts[0].strip() }}
+                {{ evidence.title }}
+                </div>
+                <div class="paragraph"> 
+                {{ parts[1].strip() }}
+                {{ evidence.content }}
+                 </div>
+                {% else %}
+                <div class="paragraph"> 
+                {{ evidence.content }}
+                </div>
+                 {% endif %}
+                
+                <div class="paragraph"> 
+                <a href="#" class="openEvidence" data-page-number="{{ evidence.page_number }}">Page {{ evidence.page_number }}</a>
+                </div>
+                {% endfor %}
+                
+                </div>
+                </div>
+                
+            </div> 
+        </div>
+        <div class="navigation-container">
+            <div class="next-step-container">
+                <button id="next-button" class="next-button">Next Step</button>
+            </div>
+            </div>
+    </div> 
+    {% endfor %}
+
+</div>
+</div>
+</div> 
+</div>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
